@@ -4,10 +4,13 @@ import Titles from "./components/Titles";
 import Form from "./components/Form";
 import Weather from "./components/Weather";
 
-const API_KEY = "3585775f387b0d0cba6c5b3dc41b8167";
+const API_KEY = "11604a873e4f1ceacfc9863da32929b9";
 
 class App extends React.Component {
+  params = new URLSearchParams(window.location.search);
   state = {
+    cityInput: this.params.get('city') || undefined,
+    countryInput: this.params.get('country') || undefined,
     temperature: undefined,
     city: undefined,
     country: undefined,
@@ -16,20 +19,31 @@ class App extends React.Component {
     error: undefined
   }
   getWeather = async (e) => {
-    e.preventDefault();
-    const city = e.target.elements.city.value;
-    const country = e.target.elements.country.value;
+    e && e.preventDefault();
+    const city = this.state.cityInput;
+    const country = this.state.countryInput;
     const api_call = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${API_KEY}&units=metric`);
     const data = await api_call.json();
     if (city && country) {
-      this.setState({
-        temperature: data.main.temp,
-        city: data.name,
-        country: data.sys.country,
-        humidity: data.main.humidity,
-        description: data.weather[0].description,
-        error: ""
-      });
+      if (data && data.main) {
+        this.setState({
+          temperature: data.main.temp,
+          city: data.name,
+          country: data.sys.country,
+          humidity: data.main.humidity,
+          description: data.weather[0].description,
+          error: ""
+        });
+      } else {
+        this.setState({
+          temperature: undefined,
+          city: undefined,
+          country: undefined,
+          humidity: undefined,
+          description: undefined,
+          error: "City not found."
+        });
+      }
     } else {
       this.setState({
         temperature: undefined,
@@ -39,6 +53,13 @@ class App extends React.Component {
         description: undefined,
         error: "Please enter the values."
       });
+    }
+  }
+  cityChanged = e => this.setState({cityInput: e.target.value});
+  countryChanged = e => this.setState({countryInput: e.target.value});
+  componentDidMount() {
+    if (this.state.cityInput && this.state.countryInput) {
+      this.getWeather();
     }
   }
   render() {
@@ -52,7 +73,12 @@ class App extends React.Component {
                   <Titles />
                 </div>
                 <div className="col-xs-7 form-container">
-                  <Form getWeather={this.getWeather} />
+                  <Form 
+                    city={this.state.cityInput} 
+                    country={this.state.countryInput} 
+                    getWeather={this.getWeather}
+                    cityChanged={this.cityChanged}
+                    countryChanged={this.countryChanged} />
                   <Weather 
                     temperature={this.state.temperature} 
                     humidity={this.state.humidity}
