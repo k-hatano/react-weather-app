@@ -22,7 +22,11 @@ class App extends React.Component {
     e && e.preventDefault();
     const city = this.state.cityInput;
     const country = this.state.countryInput;
-    const api_call = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${API_KEY}&units=metric`);
+    let api_url = `http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${API_KEY}&units=metric`;
+    if (window.location.indexOf('https:') == 0) {
+      api_url = api_url.replace('http:', 'https:');
+    }
+    const api_call = await fetch(api_url);
     const data = await api_call.json();
     if (city && country) {
       if (data && data.main) {
