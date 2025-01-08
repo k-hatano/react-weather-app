@@ -97,7 +97,7 @@ button:active {
 }
 
 .weather__info {
-  width: 60%;
+  width: 70%;
   font-size: 20px;
   font-weight: 200;
   letter-spacing: 2px;
@@ -117,6 +117,13 @@ button:active {
 .weather__value {
   color: #fff;
   font-weight: 200;
+}
+
+.weather__unit {
+  color: #bbb;
+  font-size: 16px;
+  font-weight: 200;
+  font-family: sans-serif;
 }
 
 .weather__error {

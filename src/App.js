@@ -11,10 +11,13 @@ class App extends React.Component {
   state = {
     cityInput: this.params.get('city') || undefined,
     countryInput: this.params.get('country') || undefined,
+    longitude: undefined,
+    latitude: undefined,
     temperature: undefined,
     city: undefined,
     country: undefined,
     humidity: undefined,
+    pressure: undefined,
     description: undefined,
     error: undefined
   }
@@ -31,29 +34,38 @@ class App extends React.Component {
     if (city && country) {
       if (data && data.main) {
         this.setState({
+          longitude: data.coord.lon,
+          latitude: data.coord.lat,
           temperature: data.main.temp,
           city: data.name,
           country: data.sys.country,
           humidity: data.main.humidity,
+          pressure: data.main.pressure,
           description: data.weather[0].description,
           error: ""
         });
       } else {
         this.setState({
+          longitude: undefined,
+          latitude: undefined,
           temperature: undefined,
           city: undefined,
           country: undefined,
           humidity: undefined,
+          pressure: undefined,
           description: undefined,
           error: "City not found."
         });
       }
     } else {
       this.setState({
+        longitude: undefined,
+        latitude: undefined,
         temperature: undefined,
         city: undefined,
         country: undefined,
         humidity: undefined,
+        pressure: undefined,
         description: undefined,
         error: "Please enter the values."
       });
@@ -84,8 +96,11 @@ class App extends React.Component {
                     cityChanged={this.cityChanged}
                     countryChanged={this.countryChanged} />
                   <Weather 
+                    longitude={this.state.longitude}
+                    latitude={this.state.latitude}
                     temperature={this.state.temperature} 
                     humidity={this.state.humidity}
+                    pressure={this.state.pressure}
                     city={this.state.city}
                     country={this.state.country}
                     description={this.state.description}
