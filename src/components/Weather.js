@@ -4,7 +4,7 @@ const Weather = props => (
 	<div className="weather__info">
 	 {	
 	 	props.city && props.country && <p className="weather__key"> Location: 
-	 		<span className="weather__value"> { props.city }, { props.country }</span>
+	 		<span className="weather__value"> <a href={"https://maps.google.com?q=" + props.latitude + "," + props.longitude} target="_blank">{ props.city }, { props.country }</a></span>
 	 	</p> 
 	 }
 	 { 	
@@ -24,7 +24,7 @@ const Weather = props => (
 	 }
 	 { 	
 	 	props.description && <p className="weather__key"> Conditions: 
-	 		<span className="weather__value"> { props.description } </span>
+	 		<span className="weather__value"> <a href={"https://openweathermap.org/find?q=" + props.city + "," + props.country} target="_blank">{ props.description }</a> </span>
 	 </p> 
 	 }
 	 { 
