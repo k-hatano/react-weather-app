@@ -31,7 +31,7 @@ class App extends React.Component {
     }
     const api_call = await fetch(api_url);
     const data = await api_call.json();
-    if (city && country) {
+    if (city) {
       if (data && data.main) {
         this.setState({
           longitude: data.coord.lon,
