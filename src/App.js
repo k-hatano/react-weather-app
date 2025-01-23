@@ -74,7 +74,7 @@ class App extends React.Component {
   cityChanged = e => this.setState({cityInput: e.target.value});
   countryChanged = e => this.setState({countryInput: e.target.value});
   componentDidMount() {
-    if (this.state.cityInput && this.state.countryInput) {
+    if (this.state.cityInput) {
       this.getWeather();
     }
   }
